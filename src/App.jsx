@@ -7,6 +7,7 @@ import Cart from './components/Cart';
 import Profile from './components/Profile';
 import BottomNav from './components/BottomNav';
 import BakerRegistration from './components/BakerRegistration';
+import FanRegistration from './components/FanRegistration';
 import './index.css';
 import './index.css';
 
@@ -19,8 +20,11 @@ function App() {
   if (!userRole) {
       return <Login onLogin={(role) => {
           if (role === 'REGISTER_BAKER') {
-              setUserRole('REGISTERING');
+              setUserRole('REGISTERING_BAKER');
               setCurrentView('register-baker');
+          } else if (role === 'REGISTER_EATER') {
+              setUserRole('REGISTERING_FAN');
+              setCurrentView('register-fan');
           } else {
               setUserRole(role);
               setCurrentView(role === 'BAKER' ? 'dashboard' : 'map');
@@ -61,12 +65,22 @@ function App() {
       }
       
       // EATER VIEWS
-      if (userRole === 'REGISTERING') {
+      if (userRole === 'REGISTERING_BAKER') {
           return <BakerRegistration 
               onBack={() => setUserRole(null)} 
               onRegisterSuccess={(role) => {
                   setUserRole(role);
                   setCurrentView('dashboard');
+              }} 
+          />;
+      }
+
+      if (userRole === 'REGISTERING_FAN') {
+          return <FanRegistration 
+              onBack={() => setUserRole(null)} 
+              onRegisterSuccess={(role) => {
+                  setUserRole(role);
+                  setCurrentView('map');
               }} 
           />;
       }
@@ -97,7 +111,7 @@ function App() {
       {renderView()}
       
       {/* Product Detail takes full screen without BottomNav in original mock usually, but keeping it visible for navigation flow unless specified */}
-      {currentView !== 'product' && userRole !== 'GUEST' && userRole !== 'REGISTERING' && (
+      {currentView !== 'product' && userRole !== 'GUEST' && userRole !== 'REGISTERING_BAKER' && userRole !== 'REGISTERING_FAN' && (
           <BottomNav 
               userRole={userRole} 
               currentView={currentView}

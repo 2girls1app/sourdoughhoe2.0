@@ -27,7 +27,7 @@ const Login = ({ onLogin }) => {
             </p>
             <button 
                 className="btn-outline" 
-                onClick={() => onLogin('EATER')}
+                onClick={() => onLogin('REGISTER_EATER')}
                 style={{ width: '100%', padding: '12px' }}
             >
                 👤 Only Buns Fan Sign In / Sign Up

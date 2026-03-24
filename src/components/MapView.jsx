@@ -61,6 +61,16 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
   const [activeTab, setActiveTab] = useState('map'); // 'map' or 'list'
   const [selectedBaker, setSelectedBaker] = useState(null);
   const [distance, setDistance] = useState('5');
+  const [notificationPrompt, setNotificationPrompt] = useState(null);
+
+  const handleFavoriteClick = (baker, e) => {
+      e.stopPropagation();
+      if (userRole === 'GUEST') {
+          alert('Please sign in as an Only Buns Fan to save your favorites!');
+      } else {
+          setNotificationPrompt(baker);
+      }
+  };
 
   return (
     <div id="view-container" style={{ paddingTop: '20px' }}> {/* Added padding to ensure visibility */}
@@ -195,14 +205,10 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                                     <h3 style={{ margin: 0, fontSize: '16px', fontFamily: 'var(--font-heading)', color: getStatusColor(selectedBaker.status) }}>{selectedBaker.name}</h3>
                                     <button 
                                         className="icon-btn" 
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            if (userRole === 'GUEST') alert('Please log in to save your favorite bakers!');
-                                            else alert(`${selectedBaker.name} saved to favorites!`);
-                                        }}
-                                        style={{ background: 'transparent', padding: '4px', border: '1px solid #ccc', borderRadius: '50%', transform: 'scale(0.8)' }}
+                                        onClick={(e) => handleFavoriteClick(selectedBaker, e)}
+                                        style={{ background: '#FFF59D', padding: '4px 8px', border: '1px solid #E4C15A', borderRadius: '12px', fontSize: '14px', fontWeight: 'bold', color: 'var(--color-primary)' }}
                                     >
-                                        🤍
+                                        + 🍞
                                     </button>
                                 </div>
                                 <div style={{ fontSize: '12px', color: 'var(--color-text-light)', marginTop: '2px' }}>📍 {selectedBaker.location}</div>
@@ -277,14 +283,10 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                                         )}
                                         <button 
                                             className="icon-btn" 
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                if (userRole === 'GUEST') alert('Please log in to save your favorite bakers!');
-                                                else alert(`${baker.name} saved to favorites!`);
-                                            }}
-                                            style={{ background: 'transparent', padding: '4px', border: '1px solid #ccc', borderRadius: '50%', transform: 'scale(0.8)' }}
+                                            onClick={(e) => handleFavoriteClick(baker, e)}
+                                            style={{ background: '#FFF59D', padding: '4px 8px', border: '1px solid #E4C15A', borderRadius: '12px', fontSize: '14px', fontWeight: 'bold', color: 'var(--color-primary)' }}
                                         >
-                                            🤍
+                                            + 🍞
                                         </button>
                                     </div>
                                 </div>
@@ -313,6 +315,51 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                         </button>
                     </div>
                 ))}
+            </div>
+        )}
+
+        {/* Notification Prompt Modal */}
+        {notificationPrompt && (
+            <div style={{
+                position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+                background: 'rgba(0,0,0,0.6)', zIndex: 1000,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: '16px'
+            }}>
+                <div style={{
+                    background: 'white', borderRadius: '24px', width: '100%', maxWidth: '340px',
+                    padding: '24px', boxShadow: '0 24px 48px rgba(0,0,0,0.2)',
+                    animation: 'slideUp 0.3s ease-out', textAlign: 'center'
+                }}>
+                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>🍞</div>
+                    <h2 style={{ margin: '0 0 12px 0', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>
+                        Added {notificationPrompt.name} to Favorites!
+                    </h2>
+                    <p style={{ color: '#666', fontSize: '14px', marginBottom: '24px' }}>
+                        Would you like to receive text or app notifications whenever this baker pulls fresh buns out of the oven?
+                    </p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <button 
+                            className="btn-accent-full" 
+                            style={{ margin: 0, background: '#4CAF50', borderColor: '#4CAF50' }}
+                            onClick={() => {
+                                alert(`Awesome! You'll be notified when ${notificationPrompt.name} goes live!`);
+                                setNotificationPrompt(null);
+                            }}
+                        >
+                            🔔 Yes, Notify Me!
+                        </button>
+                        <button 
+                            className="btn-outline-full" 
+                            style={{ margin: 0 }}
+                            onClick={() => {
+                                setNotificationPrompt(null);
+                            }}
+                        >
+                            No Thanks
+                        </button>
+                    </div>
+                </div>
             </div>
         )}
     </div>
