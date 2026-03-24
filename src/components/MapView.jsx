@@ -5,7 +5,7 @@ const mockBakers = [
         id: '1',
         name: 'Honest Mill Bread Company',
         location: 'Grayson, GA (5 miles away)',
-        rating: 4.9,
+        rating: 4,
         reviews: 342,
         isLive: true,
         image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=150',
@@ -20,7 +20,7 @@ const mockBakers = [
         id: '2',
         name: 'Gwinnett Sourdough',
         location: 'Lawrenceville, GA (8 miles away)',
-        rating: 4.8,
+        rating: 3,
         reviews: 89,
         isLive: true,
         image: 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=150',
@@ -34,7 +34,7 @@ const mockBakers = [
         id: '3',
         name: 'The Midnight Baker',
         location: 'Snellville, GA (6 miles away)',
-        rating: 4.9,
+        rating: 2,
         reviews: 156,
         isLive: false,
         image: 'https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=150',
@@ -175,9 +175,25 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                         </button>
                         <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
                             <img src={selectedBaker.image} alt={selectedBaker.name} style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }} />
-                            <div>
-                                <h3 style={{ margin: 0, fontSize: '16px', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>{selectedBaker.name}</h3>
+                            <div style={{ flex: 1 }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <h3 style={{ margin: 0, fontSize: '16px', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>{selectedBaker.name}</h3>
+                                    <button 
+                                        className="icon-btn" 
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (userRole === 'GUEST') alert('Please log in to save your favorite bakers!');
+                                            else alert(`${selectedBaker.name} saved to favorites!`);
+                                        }}
+                                        style={{ background: 'transparent', padding: '4px', border: '1px solid #ccc', borderRadius: '50%', transform: 'scale(0.8)' }}
+                                    >
+                                        🤍
+                                    </button>
+                                </div>
                                 <div style={{ fontSize: '12px', color: 'var(--color-text-light)', marginTop: '2px' }}>📍 {selectedBaker.location}</div>
+                                <div style={{ fontSize: '12px', color: 'var(--color-primary)', marginTop: '2px' }}>
+                                    {'🍞'.repeat(selectedBaker.rating)} <span style={{ color: '#666', fontSize: '10px' }}>({selectedBaker.reviews})</span>
+                                </div>
                             </div>
                         </div>
 
@@ -238,14 +254,30 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                             <div style={{ flex: 1 }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                     <h3 className="baker-name">{baker.name}</h3>
-                                    {baker.isLive && (
-                                        <span className="btn-tiny" style={{ background: '#E53935', animation: 'pulse 2s infinite' }}>
-                                            LIVE
-                                        </span>
-                                    )}
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                        {baker.isLive && (
+                                            <span className="btn-tiny" style={{ background: '#E53935', animation: 'pulse 2s infinite' }}>
+                                                LIVE
+                                            </span>
+                                        )}
+                                        <button 
+                                            className="icon-btn" 
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (userRole === 'GUEST') alert('Please log in to save your favorite bakers!');
+                                                else alert(`${baker.name} saved to favorites!`);
+                                            }}
+                                            style={{ background: 'transparent', padding: '4px', border: '1px solid #ccc', borderRadius: '50%', transform: 'scale(0.8)' }}
+                                        >
+                                            🤍
+                                        </button>
+                                    </div>
                                 </div>
-                                <p className="baker-meta">📍 {baker.location}</p>
-                                <p className="baker-meta">⭐ {baker.rating} ({baker.reviews} reviews)</p>
+                                <p className="baker-meta" style={{ marginBottom: '4px' }}>📍 {baker.location}</p>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', marginBottom: '8px' }}>
+                                    <span style={{ color: 'var(--color-primary)' }}>{'🍞'.repeat(baker.rating)}</span>
+                                    <span className="baker-meta" style={{ margin: 0 }}>({baker.reviews} reviews)</span>
+                                </div>
                                 
                                 {baker.isLive ? (
                                     <p className="baker-schedule" style={{ color: '#43A047' }}>

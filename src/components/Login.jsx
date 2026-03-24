@@ -15,36 +15,31 @@ const Login = ({ onLogin }) => {
         </div>
         
         <div className="welcome-actions" style={{ gap: '16px' }}>
-            <h3 style={{ textAlign: 'center', margin: 0, fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Bread Eaters</h3>
             <button 
                 className="btn-primary-large" 
-                onClick={() => onLogin('EATER')}
-                style={{ background: '#43A047' }}
+                onClick={() => onLogin('GUEST')}
+                style={{ background: '#43A047', fontSize: '1.05rem', marginBottom: '4px' }}
             >
-                📍 Find Buns Near Me
+                📍 Browse Nearby Bakers (Guest)
             </button>
+            <p style={{ textAlign: 'center', margin: '0 0 12px', color: 'var(--color-primary)', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                Or sign in to save your favorite makers:
+            </p>
             <button 
-                className="btn-primary-large" 
+                className="btn-outline" 
                 onClick={() => onLogin('EATER')}
+                style={{ width: '100%', padding: '12px' }}
             >
-                ⭐ Fave Bakers Near Me
-            </button>
-            <button 
-                className="btn-primary-large" 
-                onClick={() => onLogin('EATER')}
-                style={{ background: '#D2691E' }}
-            >
-                🍞 Fresh Buns Near Me
+                👤 Eater Sign In / Sign Up
             </button>
 
             <div style={{ margin: '16px 0', borderTop: '1px solid rgba(139, 69, 19, 0.2)' }}></div>
 
-            <h3 style={{ textAlign: 'center', margin: 0, fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>Bakers</h3>
             <button 
                 className="btn-secondary-large" 
                 onClick={() => onLogin('BAKER')}
             >
-                👩🍳 Sell Buns
+                👩🍳 Baker Dashboard Login
             </button>
         </div>
     </div>

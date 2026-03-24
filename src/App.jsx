@@ -81,7 +81,7 @@ function App() {
       {renderView()}
       
       {/* Product Detail takes full screen without BottomNav in original mock usually, but keeping it visible for navigation flow unless specified */}
-      {currentView !== 'product' && (
+      {currentView !== 'product' && userRole !== 'GUEST' && (
           <BottomNav 
               userRole={userRole} 
               currentView={currentView}
