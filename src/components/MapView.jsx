@@ -48,6 +48,7 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
   const [bakers] = useState(mockBakers);
   const [activeTab, setActiveTab] = useState('map'); // 'map' or 'list'
   const [selectedBaker, setSelectedBaker] = useState(null);
+  const [distance, setDistance] = useState('5');
 
   return (
     <div id="view-container" style={{ paddingTop: '20px' }}> {/* Added padding to ensure visibility */}
@@ -71,21 +72,44 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
         </header>
 
         {/* View Toggle */}
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-            <button 
-                className={activeTab === 'map' ? 'btn-accent' : 'btn-outline'} 
-                onClick={() => setActiveTab('map')}
-                style={{ flex: 1 }}
-            >
-                Map View
-            </button>
-            <button 
-                className={activeTab === 'list' ? 'btn-accent' : 'btn-outline'} 
-                onClick={() => setActiveTab('list')}
-                style={{ flex: 1 }}
-            >
-                List View
-            </button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '24px 0 16px' }}>
+            <div style={{ display: 'flex', gap: '8px' }}>
+                <button 
+                    className={activeTab === 'map' ? 'btn-accent' : 'btn-outline'} 
+                    onClick={() => setActiveTab('map')}
+                    style={{ flex: 1 }}
+                >
+                    Map View
+                </button>
+                <button 
+                    className={activeTab === 'list' ? 'btn-accent' : 'btn-outline'} 
+                    onClick={() => setActiveTab('list')}
+                    style={{ flex: 1 }}
+                >
+                    List View
+                </button>
+            </div>
+            
+            {activeTab === 'map' && (
+                <select 
+                    value={distance}
+                    onChange={(e) => setDistance(e.target.value)}
+                    style={{ 
+                        padding: '10px 16px', 
+                        borderRadius: '8px', 
+                        border: '2px solid var(--color-bg)', 
+                        fontFamily: 'inherit',
+                        fontSize: '14px',
+                        outline: 'none',
+                        background: 'white',
+                        cursor: 'pointer'
+                    }}
+                >
+                    <option value="5">📍 Within 5 miles</option>
+                    <option value="10">📍 Within 10 miles</option>
+                    <option value="20">📍 Within 20 miles</option>
+                </select>
+            )}
         </div>
 
         {/* Content Area */}
@@ -95,14 +119,20 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                 backgroundColor: '#e5e5e5', 
                 borderRadius: '16px',
                 border: '2px solid #E0E0E0',
-                backgroundImage: 'url("https://www.google.com/maps/d/u/0/thumbnail?mid=1QJ71O4Yy_04aX3P002T6qZ2vF30&hl=en")',
-                // Mock map image overlay
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
                 position: 'relative',
                 overflow: 'hidden'
             }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(255,255,255,0.4)' }}></div>
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d106132.8942299884!2d-84.0628373!3d33.914!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88f5be6c5c066f39%3A0xe54df52b66236b2f!2sGwinnett%20County%2C%20GA!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0, position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }} 
+                    allowFullScreen="" 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade">
+                </iframe>
+                
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(255,255,255,0.1)' }}></div>
                 
                 {/* Map Pins */}
                 <div 
