@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
 
+const getStatusColor = (status) => {
+    switch(status) {
+        case 'fresh': return '#2E7D32'; // Green
+        case 'baking': return '#F57F17'; // Yellow
+        case 'not_baking': return '#D32F2F'; // Red
+        default: return 'var(--color-primary)';
+    }
+};
+
 const mockBakers = [
     {
         id: '1',
@@ -8,6 +17,7 @@ const mockBakers = [
         rating: 4,
         reviews: 342,
         isLive: true,
+        status: 'fresh',
         image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=150',
         website: 'https://instagram.com/sourdoughhoe_or_similar',
         availableBakes: [
@@ -23,6 +33,7 @@ const mockBakers = [
         rating: 3,
         reviews: 89,
         isLive: true,
+        status: 'baking',
         image: 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=150',
         website: 'https://facebook.com/sourdough',
         availableBakes: [
@@ -37,6 +48,7 @@ const mockBakers = [
         rating: 2,
         reviews: 156,
         isLive: false,
+        status: 'not_baking',
         image: 'https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=150',
         website: 'https://twitter.com/midnightbaker',
         nextDrop: 'Tomorrow, 8AM',
@@ -97,17 +109,20 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                     style={{ 
                         padding: '10px 16px', 
                         borderRadius: '8px', 
-                        border: '2px solid var(--color-bg)', 
+                        border: 'none', 
                         fontFamily: 'inherit',
                         fontSize: '14px',
+                        fontWeight: 'bold',
                         outline: 'none',
-                        background: 'white',
-                        cursor: 'pointer'
+                        background: 'var(--color-primary)',
+                        color: 'white',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
                     }}
                 >
-                    <option value="5">📍 Within 5 miles</option>
-                    <option value="10">📍 Within 10 miles</option>
-                    <option value="20">📍 Within 20 miles</option>
+                    <option value="5">Within 5 miles</option>
+                    <option value="10">Within 10 miles</option>
+                    <option value="20">Within 20 miles</option>
                 </select>
             )}
         </div>
@@ -140,7 +155,7 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                     style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', cursor: 'pointer', textAlign: 'center', zIndex: 10 }}
                 >
                     <div style={{ fontSize: '32px', animation: bakers[0].isLive ? 'bounce 2s infinite' : 'none' }}>📍</div>
-                    <div style={{ background: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', boxShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>Honest Mill</div>
+                    <div style={{ background: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', boxShadow: '0 2px 4px rgba(0,0,0,0.2)', color: getStatusColor(bakers[0].status) }}>Honest Mill</div>
                 </div>
 
                 <div 
@@ -148,7 +163,7 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                     style={{ position: 'absolute', top: '25%', left: '20%', transform: 'translate(-50%, -50%)', cursor: 'pointer', textAlign: 'center', zIndex: 10 }}
                 >
                     <div style={{ fontSize: '32px', animation: bakers[1].isLive ? 'bounce 2s infinite' : 'none' }}>📍</div>
-                    <div style={{ background: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', boxShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>Gwinnett</div>
+                    <div style={{ background: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', boxShadow: '0 2px 4px rgba(0,0,0,0.2)', color: getStatusColor(bakers[1].status) }}>Gwinnett</div>
                 </div>
 
                 <div 
@@ -156,7 +171,7 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                     style={{ position: 'absolute', top: '65%', left: '70%', transform: 'translate(-50%, -50%)', cursor: 'pointer', textAlign: 'center', zIndex: 10 }}
                 >
                     <div style={{ fontSize: '32px', filter: 'grayscale(100%)' }}>📍</div>
-                    <div style={{ background: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', boxShadow: '0 2px 4px rgba(0,0,0,0.2)', color: '#666' }}>Midnight</div>
+                    <div style={{ background: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', boxShadow: '0 2px 4px rgba(0,0,0,0.2)', color: getStatusColor(bakers[2].status) }}>Midnight</div>
                 </div>
 
                 {/* Selected Baker Overlay popup */}
@@ -177,7 +192,7 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                             <img src={selectedBaker.image} alt={selectedBaker.name} style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }} />
                             <div style={{ flex: 1 }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <h3 style={{ margin: 0, fontSize: '16px', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>{selectedBaker.name}</h3>
+                                    <h3 style={{ margin: 0, fontSize: '16px', fontFamily: 'var(--font-heading)', color: getStatusColor(selectedBaker.status) }}>{selectedBaker.name}</h3>
                                     <button 
                                         className="icon-btn" 
                                         onClick={(e) => {
@@ -253,7 +268,7 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                             <img src={baker.image} alt={baker.name} className="baker-img" />
                             <div style={{ flex: 1 }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                    <h3 className="baker-name">{baker.name}</h3>
+                                    <h3 className="baker-name" style={{ color: getStatusColor(baker.status) }}>{baker.name}</h3>
                                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                                         {baker.isLive && (
                                             <span className="btn-tiny" style={{ background: '#E53935', animation: 'pulse 2s infinite' }}>
