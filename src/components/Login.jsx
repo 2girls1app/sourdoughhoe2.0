@@ -30,7 +30,7 @@ const Login = ({ onLogin }) => {
                 onClick={() => onLogin('EATER')}
                 style={{ width: '100%', padding: '12px' }}
             >
-                👤 Eater Sign In / Sign Up
+                👤 Bun Fan Sign In / Sign Up
             </button>
 
             <div style={{ margin: '16px 0', borderTop: '1px solid rgba(139, 69, 19, 0.2)' }}></div>
@@ -38,8 +38,16 @@ const Login = ({ onLogin }) => {
             <button 
                 className="btn-secondary-large" 
                 onClick={() => onLogin('BAKER')}
+                style={{ marginBottom: '8px' }}
             >
                 👩🍳 Baker Dashboard Login
+            </button>
+            <button 
+                className="btn-outline" 
+                onClick={() => onLogin('REGISTER_BAKER')}
+                style={{ width: '100%', padding: '12px', borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}
+            >
+                📝 Register as Baker
             </button>
         </div>
     </div>

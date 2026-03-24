@@ -6,6 +6,7 @@ import ProductDetail from './components/ProductDetail';
 import Cart from './components/Cart';
 import Profile from './components/Profile';
 import BottomNav from './components/BottomNav';
+import BakerRegistration from './components/BakerRegistration';
 import './index.css';
 import './index.css';
 
@@ -17,8 +18,13 @@ function App() {
 
   if (!userRole) {
       return <Login onLogin={(role) => {
-          setUserRole(role);
-          setCurrentView(role === 'BAKER' ? 'dashboard' : 'map');
+          if (role === 'REGISTER_BAKER') {
+              setUserRole('REGISTERING');
+              setCurrentView('register-baker');
+          } else {
+              setUserRole(role);
+              setCurrentView(role === 'BAKER' ? 'dashboard' : 'map');
+          }
       }} />;
   }
 
@@ -55,6 +61,16 @@ function App() {
       }
       
       // EATER VIEWS
+      if (userRole === 'REGISTERING') {
+          return <BakerRegistration 
+              onBack={() => setUserRole(null)} 
+              onRegisterSuccess={(role) => {
+                  setUserRole(role);
+                  setCurrentView('dashboard');
+              }} 
+          />;
+      }
+      
       switch(currentView) {
           case 'map': 
               return <MapView userRole={userRole} onGoHome={handleLogout} onSelectProduct={handleSelectProduct} />;
@@ -81,7 +97,7 @@ function App() {
       {renderView()}
       
       {/* Product Detail takes full screen without BottomNav in original mock usually, but keeping it visible for navigation flow unless specified */}
-      {currentView !== 'product' && userRole !== 'GUEST' && (
+      {currentView !== 'product' && userRole !== 'GUEST' && userRole !== 'REGISTERING' && (
           <BottomNav 
               userRole={userRole} 
               currentView={currentView}

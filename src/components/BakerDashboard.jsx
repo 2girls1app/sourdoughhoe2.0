@@ -64,7 +64,7 @@ const BakerDashboard = ({ onGoHome }) => {
         </header>
 
         {/* Status Area (Oven Widget to the left) */}
-        <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', gap: '20px', marginBottom: '24px', alignItems: 'flex-start' }}>
             <div style={{ 
                 background: '#444', 
                 padding: '12px', 
@@ -118,6 +118,15 @@ const BakerDashboard = ({ onGoHome }) => {
                 <div style={{ 
                     position: 'relative', height: '80px', perspective: '500px'
                 }}>
+                    {/* Smoke Animation (escapes the door) */}
+                    {bakingStatus === 'fresh' && (
+                        <div style={{ position: 'absolute', width: '100%', height: '100%', top: '-20px', left: 0, zIndex: 10, pointerEvents: 'none' }}>
+                            <div className="smoke smoke-1"></div>
+                            <div className="smoke smoke-2"></div>
+                            <div className="smoke smoke-3"></div>
+                        </div>
+                    )}
+
                     {/* Oven Interior (Behind Door) */}
                     <div style={{ 
                         position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
@@ -148,6 +157,38 @@ const BakerDashboard = ({ onGoHome }) => {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Oven Explanations & Broadcast Tools */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
+                <div style={{ background: 'white', padding: '12px', borderRadius: '12px', border: '1px solid #E0E0E0', boxShadow: 'var(--shadow-sm)' }}>
+                    <h4 style={{ margin: '0 0 8px 0', fontSize: '13px', color: 'var(--color-primary)' }}>Status Legend</h4>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', marginBottom: '4px' }}>
+                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#4CAF50', border: '1px solid #388E3C' }}></div>
+                        <span style={{ fontWeight: 600 }}>Green:</span> Baked (Oven open)
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', marginBottom: '4px' }}>
+                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#FFD54F', border: '1px solid #F57F17' }}></div>
+                        <span style={{ fontWeight: 600 }}>Yellow:</span> Baking (Oven heating)
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}>
+                        <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#F44336', border: '1px solid #D32F2F' }}></div>
+                        <span style={{ fontWeight: 600 }}>Red:</span> No Bake
+                    </div>
+                </div>
+
+                {bakingStatus === 'fresh' && (
+                    <div style={{ background: '#E8F5E9', border: '1px solid #4CAF50', padding: '12px', borderRadius: '12px', animation: 'slideUp 0.3s ease-out' }}>
+                        <h4 style={{ margin: '0 0 8px 0', fontSize: '13px', color: '#2E7D32', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <span className="live-dot" style={{ background: '#F44336', width: '8px', height: '8px', borderRadius: '50%', display: 'inline-block', animation: 'pulse 1s infinite' }}></span>
+                            You are LIVE!
+                        </h4>
+                        <p style={{ fontSize: '11px', color: '#388E3C', margin: '0 0 8px 0' }}>Buyers can now see your location on the map.</p>
+                        <button className="btn-accent" onClick={() => alert('Broadcasting location to map!')} style={{ background: '#4CAF50', borderColor: '#4CAF50', width: '100%', fontSize: '12px' }}>
+                            📍 Broadcast Location
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
 
