@@ -62,6 +62,7 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
   const [selectedBaker, setSelectedBaker] = useState(null);
   const [distance, setDistance] = useState('5');
   const [notificationPrompt, setNotificationPrompt] = useState(null);
+  const [ratingPrompt, setRatingPrompt] = useState(null);
 
   const handleFavoriteClick = (baker, e) => {
       e.stopPropagation();
@@ -263,6 +264,16 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                         >
                             Visit Social / Website
                         </button>
+                        <button 
+                            className="btn-outline-full" 
+                            style={{ padding: '12px', marginTop: '8px', fontSize: '14px', borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}
+                            onClick={() => {
+                                if (userRole === 'GUEST') alert('Please sign in to rate bakers!');
+                                else setRatingPrompt(selectedBaker);
+                            }}
+                        >
+                            🍞 Rate Your Experience
+                        </button>
                     </div>
                 )}
             </div>
@@ -313,6 +324,16 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                         >
                             Order Now (External Site)
                         </button>
+                        <button 
+                            className="btn-outline-full" 
+                            style={{ padding: '10px', marginTop: '-4px', fontSize: '14px', borderRadius: '8px', borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}
+                            onClick={() => {
+                                if (userRole === 'GUEST') alert('Please sign in to rate bakers!');
+                                else setRatingPrompt(baker);
+                            }}
+                        >
+                            🍞 Rate Baker
+                        </button>
                     </div>
                 ))}
             </div>
@@ -359,6 +380,54 @@ const MapView = ({ userRole, onGoHome, onSelectProduct }) => {
                             No Thanks
                         </button>
                     </div>
+                </div>
+            </div>
+        )}
+
+        {/* Rating Prompt Modal */}
+        {ratingPrompt && (
+            <div style={{
+                position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+                background: 'rgba(0,0,0,0.6)', zIndex: 1000,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: '16px'
+            }}>
+                <div style={{
+                    background: 'white', borderRadius: '24px', width: '100%', maxWidth: '340px',
+                    padding: '24px', boxShadow: '0 24px 48px rgba(0,0,0,0.2)',
+                    animation: 'slideUp 0.3s ease-out', textAlign: 'center'
+                }}>
+                    <h2 style={{ margin: '0 0 12px 0', fontFamily: 'var(--font-heading)', color: 'var(--color-primary)' }}>
+                        Rate {ratingPrompt.name}
+                    </h2>
+                    <p style={{ color: '#666', fontSize: '14px', marginBottom: '24px' }}>
+                        How many Buns would you give this baker based on your overall experience?
+                    </p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
+                        {[4, 3, 2, 1].map(buns => (
+                            <button 
+                                key={buns}
+                                className="btn-outline" 
+                                style={{ margin: 0, padding: '12px', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                                onClick={() => {
+                                    alert(`Thanks for rating! You gave ${ratingPrompt.name} ${buns} Buns!`);
+                                    setRatingPrompt(null);
+                                }}
+                            >
+                                <span style={{ fontSize: '20px' }}>{'🍞'.repeat(buns)}</span>
+                                <span style={{ fontSize: '12px', color: '#666', fontWeight: 'bold' }}>
+                                    {buns === 4 ? "Exceptional" : buns === 3 ? "Great" : buns === 2 ? "Solid" : "Good"}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+                    <button 
+                        className="btn-outline-full" 
+                        style={{ border: 'none', color: '#999' }}
+                        onClick={() => setRatingPrompt(null)}
+                    >
+                        Cancel
+                    </button>
                 </div>
             </div>
         )}
