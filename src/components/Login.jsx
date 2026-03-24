@@ -30,7 +30,7 @@ const Login = ({ onLogin }) => {
                 onClick={() => onLogin('EATER')}
                 style={{ width: '100%', padding: '12px' }}
             >
-                👤 Bun Fan Sign In / Sign Up
+                👤 Only Buns Fan Sign In / Sign Up
             </button>
 
             <div style={{ margin: '16px 0', borderTop: '1px solid rgba(139, 69, 19, 0.2)' }}></div>

@@ -381,7 +381,7 @@ const BakerDashboard = ({ onGoHome }) => {
                     </div>
 
                     <p style={{ color: '#666', fontSize: '14px', marginBottom: '20px' }}>
-                        These 14 local eaters have favorited your bakery and will be alerted when you go live!
+                        These 14 local Only Buns fans have favorited your bakery and will be alerted when you go live!
                     </p>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '300px', overflowY: 'auto', paddingRight: '8px' }}>

@@ -13,7 +13,7 @@ const Profile = ({ userRole, onLogout }) => {
                         {userRole === 'BAKER' ? "Sarah" : "John Doe"}
                     </h1>
                     <span style={{ fontSize: '14px', color: 'var(--color-text-light)' }}>
-                        {userRole === 'BAKER' ? "Baker" : "Bread Eater"}
+                        {userRole === 'BAKER' ? "Baker" : "Only Buns Fan"}
                     </span>
                 </div>
             </div>
